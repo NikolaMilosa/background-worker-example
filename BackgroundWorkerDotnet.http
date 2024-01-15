@@ -1,0 +1,6 @@
+@BackgroundWorkerDotnet_HostAddress = http://localhost:5122
+
+GET {{BackgroundWorkerDotnet_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

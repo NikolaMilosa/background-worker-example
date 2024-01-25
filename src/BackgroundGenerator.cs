@@ -1,7 +1,9 @@
-
-
-
 using System.Threading.Channels;
+using Microsoft.Extensions.Hosting;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 class BackgroundGenerator<T> : IHostedService
 {

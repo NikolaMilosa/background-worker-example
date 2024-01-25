@@ -1,5 +1,11 @@
 using System.Threading.Channels;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var channel = Channel.CreateUnbounded<Guid>(new UnboundedChannelOptions {
+var channel = Channel.CreateUnbounded<Guid>(new UnboundedChannelOptions
+{
     SingleReader = true,
     SingleWriter = false,
 });
@@ -18,11 +25,9 @@ builder.Services.AddHostedService(x => new BackgroundGenerator<Guid>(x.GetRequir
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // app.UseHttpsRedirection();
 
@@ -33,7 +38,7 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
@@ -46,8 +51,10 @@ app.MapGet("/weatherforecast", () =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
-app.MapGet("/process", async ([FromServices] Channel<Guid> channel, uint num) => {
-    for (int i = 0; i < num; i++) {
+app.MapGet("/process", async ([FromServices] Channel<Guid> channel, uint num) =>
+{
+    for (int i = 0; i < num; i++)
+    {
         await channel.Writer.WriteAsync(Guid.NewGuid());
     }
 
@@ -56,7 +63,7 @@ app.MapGet("/process", async ([FromServices] Channel<Guid> channel, uint num) =>
 .WithName("Process")
 .WithOpenApi();
 
-app.Run();
+app.Run("http://localhost:8000");
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {

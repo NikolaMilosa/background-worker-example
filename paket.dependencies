@@ -1,0 +1,10 @@
+source https://api.nuget.org/v3/index.json
+storage none
+framework: net6.0, net7.0, net8.0, netstandard2.0
+
+nuget Microsoft.AspNetCore.OpenApi 7.0.15
+nuget Swashbuckle.AspNetCore 6.4.0
+nuget Microsoft.AspNetCore.App.Ref 7.0.15
+nuget Microsoft.NETCore.App.Ref 7.0.15
+nuget Microsoft.NETCore.App.Runtime.linux-x64 7.0.15
+nuget Microsoft.AspNetCore.App.Runtime.linux-x64 7.0.15

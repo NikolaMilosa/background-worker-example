@@ -1,0 +1,26 @@
+load(
+    "@rules_dotnet//dotnet:defs.bzl",
+    "csharp_binary",
+)
+
+csharp_binary(
+    name = "background-worker",
+    srcs = [
+        "BackgroundGenerator.cs",
+        "Program.cs"
+    ],
+    project_sdk = "web",
+    target_frameworks = [ "net7.0" ],
+    targeting_packs = [
+        "@paket.main//microsoft.aspnetcore.app.ref",
+        "@paket.main//microsoft.netcore.app.ref",
+    ],
+    deps = [
+        "@paket.main//swashbuckle.aspnetcore.swagger",
+        "@paket.main//swashbuckle.aspnetcore.swaggergen",
+        "@paket.main//swashbuckle.aspnetcore.swaggerui",
+        "@paket.main//swashbuckle.aspnetcore",
+        "@paket.main//microsoft.aspnetcore.openapi",
+        "@paket.main//microsoft.openapi",
+    ]
+)
